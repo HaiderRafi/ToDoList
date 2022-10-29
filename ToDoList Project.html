@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/9502ebbdb8.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>To Do List</title>
+    <style>
+        body {
+            background-color: #352f5b;
+        }
+
+        .container {
+            max-width: 400px;
+
+        }
+
+        input[type=text],
+        input[type=text]:focus {
+            columns: #fff;
+            border: none;
+            background-color: rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+        }
+
+        .todos li {
+            background-color: #423a6f;
+        }
+
+        .delete {
+            cursor: pointer;
+        }
+        .filtered{
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- to do and search bar -->
+        <header class="text-center text-light my-4">
+            <h1 class="mb-4">To Do List</h1>
+            <form class="search">
+                <input type="text" class="form-control m-auto" name="search" placeholder="search">
+            </form>
+        </header>
+
+
+        <!-- list -->
+        <ul class="list-group todos mx-auto text-light">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Play MarioKart</span>
+                <i class="fa-solid fa-trash delete"></i>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Nacho Gaao Dhoom Macho</span>
+                <i class="fa-solid fa-trash delete"></i>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Bajao Guitar</span>
+                <i class="fa-solid fa-trash delete"></i>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Bina sur Bina Taal</span>
+                <i class="fa-solid fa-trash delete"></i>
+            </li>
+        </ul>
+
+        <!-- form to add new todos -->
+        <form class="add text-center my-4">
+            <label class="text-light">Add a New ToDos....</label>
+            <input type="text" class="form-control m-auto" name="add">
+        </form>
+
+    </div>
+
+
+    <script>
+        //addng to todolist
+
+
+        //making a funtion for generating li html template for reusibility
+
+        let gentemplate = (todo) => {
+            let html = `<li class="list-group-item d-flex justify-content-between align-items-center">
+        <span>${todo}</span>
+        <i class="fa-solid fa-trash delete"></i>
+    </li> `
+            ul.innerHTML += html
+
+        }
+        // x----------x-------------
+        let ul = document.querySelector(".todos")
+        let add = document.querySelector(".add")
+        console.log(add);
+        add.addEventListener("submit", (e) => {
+            e.preventDefault()
+            let todo = add.add.value.trim()     //todo mein humne dala add jo upar humne banai aur class add,, trim() se extra space hatt jayegi
+            console.log(todo);                //abb jo hum likh rahe hai vo value logg ho rahi hai
+
+
+            if (todo.length) {                 //this if and todo.length is for if a user do not write anything and enter it will not add it to the list
+                gentemplate(todo);           // calling function
+                add.reset()                   //it will clear the text area after we write anything
+            }
+
+
+        })
+ // x----------x------------x----------x----------x------------x---------------x----------x------------x-------------x----------
+        // deleting todos
+        //we have already decleared ul= .todos above
+
+        ul.addEventListener(('click'), (e) => {
+            if (e.target.classList.contains('delete')) {   //this check jahan click kia hai udhar delete hai ya nahi
+                e.target.parentElement.remove()          //delete class ki parent class jo hai li usse delete kardo
+            }
+        })
+ // x----------x------------x----------x----------x------------x-------------x----------x-------------x----------
+        
+        //creating a function which took search baar call back function and match the words in list
+        let filterTodos=(term)=>{
+        let array=    Array.from(ul.children);    //ul ke children mein sab list aati hai jahan todos list store hai, but this is in html form convert it into array list by array.form
+        //     array.filter((todo)=>{
+        //         // console.log(todo.textContent); 
+        //         // return true
+        //         return !todo.textContent.includes(term)        //it will return todo and content of the todo which is ul li, and .includes get the booean value agar vo word hai to true nahi to falise but hume jo word hai wo nahi chaiye to ! hum ye ismeaal karenge
+
+        //    })
+        //     array.forEach((todo)=>{
+        //         todo.classList.add('filtered')
+
+        //     })
+            array. filter((todo)=>!todo.textContent.toLowerCase().includes(term))           //ye bhi aur uar waala dono sahi hai
+            .forEach((todo)=> todo.classList.add('filtered'))
+
+
+
+            let arrays=    Array.from(ul.children); 
+            arrays. filter((todo)=>todo.textContent.toLowerCase().includes(term))          //this is just oposite of upar wala
+            .forEach((todo)=> todo.classList.remove('filtered'))
+        };
+
+
+        //search bar
+        let search = document.querySelector(".search input")
+        search.addEventListener("keyup", (e) => {             //keyup se ek ek value console mein aati hai
+            e.preventDefault()
+            let term = search.value.trim().toLowerCase()    //this lower case will agar aap kisi bhi case mein likho ye search kar lega
+            // console.log(term);
+            filterTodos(term)         //when ever user presses the key fire this fuction
+        })
+
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
